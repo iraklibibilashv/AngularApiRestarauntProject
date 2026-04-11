@@ -592,6 +592,40 @@ $sidebar-w: 280px;
   }
 }
 
+// ── Skeleton Loading ─────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+$skel-bg: linear-gradient(90deg, rgba($gold,0.04) 25%, rgba($gold,0.10) 50%, rgba($gold,0.04) 75%);
+
+.skeleton {
+  pointer-events: none;
+
+  .skeleton-img {
+    aspect-ratio: 4/3;
+    background: $surface2;
+    background-image: $skel-bg;
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
+
+  .skel-line {
+    height: 12px;
+    border-radius: 2px;
+    margin-bottom: 0.6rem;
+    background: $surface2;
+    background-image: $skel-bg;
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
+
+  .skel-short { width: 40%; }
+  .skel-long  { width: 80%; height: 16px; }
+  .skel-mid   { width: 60%; }
+}
+
 // ── Empty State ──────────────────────────────────────────────
 .empty-state {
   padding: 5rem 2rem;

@@ -1,4 +1,3 @@
-
 <div class="menu-page">
 
   <!-- ── Page Hero ───────────────────────────── -->
@@ -39,11 +38,11 @@
           <input
             type="text"
             placeholder="Dish name..."
-            [(ngModel)]="filters.search"
-            (ngModelChange)="onFilterChange()"
+            [ngModel]="filtersArr.Query"
+            (ngModelChange)="onSearch($event)"
             class="filter-input"
           />
-          <button class="input-clear" *ngIf="filters.search" (click)="filters.search=''; onFilterChange()">×</button>
+          <button class="input-clear" *ngIf="filtersArr.Query" (click)="onSearch('')">×</button>
         </div>
       </div>
 
@@ -53,20 +52,20 @@
         <div class="toggle-group">
           <button
             class="toggle-btn"
-            [class.active]="filters.vegetarian === null"
-            (click)="filters.vegetarian = null; onFilterChange()">
+            [class.active]="filtersArr.Vegetarian === null"
+            (click)="onVegetarian(null)">
             All
           </button>
           <button
             class="toggle-btn toggle-btn--yes"
-            [class.active]="filters.vegetarian === true"
-            (click)="filters.vegetarian = true; onFilterChange()">
+            [class.active]="filtersArr.Vegetarian === true"
+            (click)="onVegetarian(true)">
             <span>🌿</span> Yes
           </button>
           <button
             class="toggle-btn toggle-btn--no"
-            [class.active]="filters.vegetarian === false"
-            (click)="filters.vegetarian = false; onFilterChange()">
+            [class.active]="filtersArr.Vegetarian === false"
+            (click)="onVegetarian(false)">
             <span>🥩</span> No
           </button>
         </div>
@@ -76,18 +75,20 @@
       <div class="filter-block">
         <label class="filter-label">
           Spiciness
-          <span class="label-val">{{ filters.spiciness === 0 ? 'Any' : '🌶'.repeat(filters.spiciness) }}</span>
+          <span class="label-val">{{ filtersArr.Spiciness === 0 ? 'Any' : '🌶'.repeat(filtersArr.Spiciness) }}</span>
         </label>
         <div class="range-wrap">
           <input
             type="range"
             min="0" max="5"
-            [(ngModel)]="filters.spiciness"
-            (ngModelChange)="onFilterChange()"
-            class="range-slider spice-slider"
+            [ngModel]="filtersArr.Spiciness"
+            (ngModelChange)="onSpiciness($event)"
+            class="range-slider"
           />
           <div class="range-ticks">
-            <span *ngFor="let t of [0,1,2,3,4,5]">{{ t === 0 ? 'Any' : t }}</span>
+            @for (t of [0,1,2,3,4,5]; track t) {
+              <span>{{ t === 0 ? 'Any' : t }}</span>
+            }
           </div>
         </div>
       </div>
@@ -96,18 +97,18 @@
       <div class="filter-block">
         <label class="filter-label">
           Min Rating
-          <span class="label-val">{{ filters.rating === 0 ? 'Any' : filters.rating + '★' }}</span>
+          <span class="label-val">{{ filtersArr.Rate === 0 ? 'Any' : filtersArr.Rate + '★' }}</span>
         </label>
         <div class="star-picker">
-          <button
-            *ngFor="let s of [1,2,3,4,5]"
-            class="star-btn"
-            [class.active]="s <= filters.rating"
-            (click)="setRating(s)"
-            [title]="s + ' star' + (s > 1 ? 's' : '')">
-            ★
-          </button>
-          <button class="star-reset" *ngIf="filters.rating > 0" (click)="filters.rating = 0; onFilterChange()">×</button>
+          @for (s of [1,2,3,4,5]; track s) {
+            <button
+              class="star-btn"
+              [class.active]="s <= filtersArr.Rate"
+              (click)="onRating(s)">
+              ★
+            </button>
+          }
+          <button class="star-reset" *ngIf="filtersArr.rating > 0" (click)="onRating(0)">×</button>
         </div>
       </div>
 
@@ -115,7 +116,11 @@
       <div class="filter-block">
         <label class="filter-label">
           Price Range
-          <span class="label-val">${{ filters.minPrice }} – ${{ filters.maxPrice }}</span>
+          <span class="label-val">
+            {{ filtersArr.MinPrice !== null ? '$' + filtersArr.MinPrice : '$0' }}
+            –
+            {{ filtersArr.MaxPrice !== null ? '$' + filtersArr.MaxPrice : '∞' }}
+          </span>
         </label>
         <div class="price-inputs">
           <div class="price-field">
@@ -123,8 +128,8 @@
             <input
               type="number"
               placeholder="Min"
-              [(ngModel)]="filters.minPrice"
-              (ngModelChange)="onFilterChange()"
+              [ngModel]="filtersArr.MinPrice"
+              (ngModelChange)="onMinPrice($event)"
               min="0"
               class="filter-input filter-input--price"
             />
@@ -135,8 +140,8 @@
             <input
               type="number"
               placeholder="Max"
-              [(ngModel)]="filters.maxPrice"
-              (ngModelChange)="onFilterChange()"
+              [ngModel]="filtersArr.MaxPrice"
+              (ngModelChange)="onMaxPrice($event)"
               min="0"
               class="filter-input filter-input--price"
             />
@@ -150,14 +155,18 @@
         <div class="category-list">
           <button
             class="category-btn"
-            [class.active]="filters.category === null"
-            (click)="filters.category = null; onFilterChange()">
+            [class.active]="filtersArr.CategoryId === null"
+            (click)="onCategory(null)">
             All
           </button>
-          @for (item of categoriesArr; track $index) {
-          <button class="category-btn">{{item.name}}
-          </button>
-        }
+          @for (cat of categoriesArr; track cat.id) {
+            <button
+              class="category-btn"
+              [class.active]="filtersArr.CategoryId === cat.id"
+              (click)="onCategory(cat.id, cat.name)">
+              {{ cat.name }}
+            </button>
+          }
         </div>
       </div>
 
@@ -171,7 +180,7 @@
       <!-- Toolbar -->
       <div class="toolbar">
         <p class="results-count">
-          <strong>{{ resultCount }}</strong> dishes found
+          <strong>{{ filterProducts.length }}</strong> dishes found
         </p>
         <button class="filter-toggle" (click)="filterOpen = !filterOpen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -182,48 +191,59 @@
         </button>
       </div>
 
-      <!-- Grid — render your *ngFor cards here -->
-      <div class="products-grid">
-
-        <!-- ╔══════════════════════════════╗
-             ║  YOUR *ngFor CARDS GO HERE   ║
-             ╚══════════════════════════════╝ -->
-
-        <!-- Placeholder card — DELETE when you add real data -->
-         @for (item of filterProducts; track $index) {
-        <div class="dish-card">
-          <div class="dish-card__img-wrap">
-            <div class="dish-card__img-placeholder">
-              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
-                <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
-                <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5"/>
-                <circle cx="26" cy="28" r="2" fill="currentColor"/>
-                <circle cx="38" cy="28" r="2" fill="currentColor"/>
-              </svg>
-              <span><img [src]="" alt=""></span>
+      <!-- Loading Skeleton -->
+      @if (isLoading) {
+        <div class="products-grid">
+          @for (s of [1,2,3,4,5,6]; track s) {
+            <div class="dish-card skeleton">
+              <div class="skeleton-img"></div>
+              <div class="dish-card__body">
+                <div class="skel-line skel-short"></div>
+                <div class="skel-line skel-long"></div>
+                <div class="skel-line skel-mid"></div>
+              </div>
             </div>
-          </div>
-          <div class="dish-card__body">
-            <span class="dish-card__tag">Category</span>
-            <h3 class="dish-card__name">{{item.name}}</h3>
-            <p class="dish-card__desc">{{item.description}}</p>
-            <div class="dish-card__footer">
-              <span class="dish-card__price">${{item.price}}</span>
-              <button class="dish-card__btn">Add to Cart</button>
-            </div>
-          </div>
+          }
         </div>
+      }
+
+      <!-- Products Grid -->
+      @if (!isLoading) {
+        <div class="products-grid">
+          @for (item of filterProducts; track item.id) {
+            <div class="dish-card">
+              <div class="dish-card__img-wrap">
+                <img [src]="item.image" [alt]="item.name" />
+                <div class="dish-card__img-placeholder">
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                    <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5"/>
+                    <circle cx="26" cy="28" r="2" fill="currentColor"/>
+                    <circle cx="38" cy="28" r="2" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="dish-card__body">
+                <span class="dish-card__tag">{{ item.categoryName }}</span>
+                <h3 class="dish-card__name">{{ item.name }}</h3>
+                <p class="dish-card__desc">{{ item.description }}</p>
+                <div class="dish-card__footer">
+                  <span class="dish-card__price">${{ item.price }}</span>
+                  <button class="dish-card__btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (filterProducts.length === 0) {
+          <div class="empty-state">
+            <span>🍽️</span>
+            <p>No dishes match your filters.</p>
+            <button (click)="clearAll()">Clear filters</button>
+          </div>
         }
-        <!-- end placeholder -->
-
-      </div>
-
-      <!-- Empty state -->
-      <div class="empty-state" *ngIf="resultCount === 0">
-        <span>🍽️</span>
-        <p>No dishes match your filters.</p>
-        <button (click)="clearAll()">Clear filters</button>
-      </div>
+      }
 
     </main>
   </div>

@@ -3,115 +3,163 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Api } from '../../services/api';
-
-export interface MenuFilters {
-  search: string;
-  vegetarian: boolean | null;
-  spiciness: number;     // 0 = Any, 1–5
-  rating: number;        // 0 = Any, 1–5
-  minPrice: number | null;
-  maxPrice: number | null;
-  category: string | null;
-}
-
 @Component({
   selector: 'app-menu',
-  imports: [FormsModule,CommonModule,RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
-
 export class Menu {
-  constructor(private api : Api,
-    private router : RouterModule,
-    private cdr : ChangeDetectorRef
-  ){}
-
-  filters: MenuFilters = this.defaultFilters();
+  constructor(
+    private api: Api,
+    private router: RouterModule,
+    private cdr: ChangeDetectorRef,
+  ) {} 
+  
+filterProducts: any[] = [];
+  categoriesArr: any[] = [];
  
-
+  isLoading = false;
   filterOpen = false;
-  resultCount = 0; 
-  filterProducts : any[] = []
-  categoriesArr : any[] = []
+  selectCategoryName = 'Categories';
  
-
-  categories: string[] = []
+  filtersArr: any = {
+    Query: '',
+    Vegetarian: null,
+    Spiciness: 0,
+    Rate: 0,
+    MinPrice: null,
+    MaxPrice: null,
+    CategoryId: null,
+    Take: 50,
+    Page: 1,
+  };
  
-  ngOnInit(){
-    this.api.getAllProducts(`products/filter?Take=50&Page=1`).subscribe({
-      next: (data : any) => {
-        this.filterProducts = data.data.products
-        console.log(this.filterProducts);
-        this.cdr.detectChanges()
-        
-        this.api.getAllProducts(`categories`).subscribe({
-          next : (data : any) => {
-            this.categoriesArr = data.data
-            this.cdr.detectChanges()
-            console.log(this.categoriesArr);
-            
-
-          }
-        })
-        
-
-      }
-    })
-
-    
-
-  }
-
-  setRating(star: number): void {
-    this.filters.rating = this.filters.rating === star ? 0 : star;
-    this.onFilterChange();
+ 
+  ngOnInit(): void {
+    this.api.getAllProducts('categories').subscribe({
+    next: (res: any) => {
+      this.categoriesArr = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
+        console.log('categories:', this.categoriesArr);
+      this.loadProducts(); // ← categories შემდეგ
+       this.cdr.detectChanges(); 
+    }
+  });
   }
  
-
-  onFilterChange(): void {
-    //
-    // this.filteredProducts = this.allProducts.filter(p => {
-    //   if (this.filters.search && !p.name.toLowerCase().includes(this.filters.search.toLowerCase())) return false;
-    //   if (this.filters.vegetarian !== null && p.isVegetarian !== this.filters.vegetarian) return false;
-    //   if (this.filters.spiciness > 0 && p.spiciness < this.filters.spiciness) return false;
-    //   if (this.filters.rating > 0 && p.rating < this.filters.rating) return false;
-    //   if (this.filters.minPrice !== null && p.price < this.filters.minPrice) return false;
-    //   if (this.filters.maxPrice !== null && p.price > this.filters.maxPrice) return false;
-    //   if (this.filters.category && p.category !== this.filters.category) return false;
-    //   return true;
-    // });
-    //
-    // this.resultCount = this.filteredProducts.length;
+  // loadProducts() {
+  //   this.isLoading = true;
+  //   this.api.getFilter(this.filtersArr).subscribe({
+  //     next: (res: any) => {
+  //       console.log('API response:', res)
+  //       this.filterProducts = res.data.products
+  //       this.isLoading = false;
+  //       this.cdr.detectChanges();
+  //     },
+  //     error: (err: any) => {
+  //       console.error(err);
+  //       this.isLoading = false;
+  //       this.cdr.detectChanges();
+  //     },
+  //   });
+  // }
+  loadProducts() {
+  this.isLoading = true;
+  this.api.getFilter(this.filtersArr).subscribe({
+    next: (res: any) => {
+      console.log('API response:', res);
+      this.filterProducts = res.data.products.map((p: any) => ({
+        ...p,
+        categoryName: this.getCategoryName(p.categoryId)
+      }));
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      console.error(err);
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    },
+  });
+}
+ 
+  loadCategories() {
+    this.api.getAllProducts('categories').subscribe({
+      next: (res: any) => {
+        this.categoriesArr = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
+      },
+      error: (err: any) => console.error(err),
+    });
   }
+ 
+  // ── Filter methods ───────────────────────────────────────
+ 
+  onSearch(value: string) {
+    this.filtersArr.Query = value;
+    this.loadProducts();
+  }
+ 
+  onRating(value: number) {
+    this.filtersArr.Rate = this.filtersArr.Rate === value ? 0 : value;
+    this.loadProducts();
+  }
+ 
+  onSpiciness(value: number) {
+    this.filtersArr.Spiciness = value;
+    this.loadProducts();
+  }
+ 
+  onMinPrice(value: number) {
+    this.filtersArr.MinPrice = value || null;
+    this.loadProducts();
+  }
+ 
+  onMaxPrice(value: number) {
+    this.filtersArr.MaxPrice = value || null;
+    this.loadProducts();
+  }
+ 
+  onVegetarian(value: boolean | null) {
+    this.filtersArr.Vegetarian = value;
+    this.loadProducts();
+  }
+ 
+  onCategory(id: number | null, name: string = 'Categories') {
+    this.filtersArr.CategoryId = id;
+    this.selectCategoryName = name;
+    this.loadProducts();
+  }
+ 
+  clearAll() {
+    this.filtersArr = {
+      Query: '',
+      Vegetarian: null,
+      Spiciness: 0,
+      Rate: 0,
+      MinPrice: null,
+      MaxPrice: null,
+      CategoryId: null,
+      Take: 50,
+      Page: 1,
+    };
+    this.selectCategoryName = 'Categories';
+    this.loadProducts();
+  }
+  getCategoryName(categoryId: number): string {
+  const cat = this.categoriesArr.find(c => c.id === categoryId);
+  return cat ? cat.name : '';
+}
+
  
   hasActiveFilters(): boolean {
-    const f = this.filters;
     return (
-      f.search !== '' ||
-      f.vegetarian !== null ||
-      f.spiciness !== 0 ||
-      f.rating !== 0 ||
-      f.minPrice !== null ||
-      f.maxPrice !== null ||
-      f.category !== null
+      !!this.filtersArr.Search ||
+      this.filtersArr.Vegetarian !== null ||
+      this.filtersArr.Spiciness > 0 ||
+      this.filtersArr.Rate > 0 ||
+      this.filtersArr.MinPrice !== null ||
+      this.filtersArr.MaxPrice !== null ||
+      this.filtersArr.CategoryId !== null
     );
-  }
- 
-  clearAll(): void {
-    this.filters = this.defaultFilters();
-    this.onFilterChange();
-  }
- 
-  private defaultFilters(): MenuFilters {
-    return {
-      search: '',
-      vegetarian: null,
-      spiciness: 0,
-      rating: 0,
-      minPrice: null,
-      maxPrice: null,
-      category: null
-    };
   }
 }
