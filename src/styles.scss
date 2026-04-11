@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+/* Add this to your global styles.scss or index.html <head> */
+
+/* Option 1 — styles.scss */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+/* Option 2 — index.html <head> */
+/*
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+*/
+
+/* Also add this to styles.scss for global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0f0d0a;
+  color: #f5f0e8;
+  overflow-x: hidden;
+}

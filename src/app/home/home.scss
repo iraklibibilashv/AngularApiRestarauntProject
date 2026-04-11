@@ -1,0 +1,576 @@
+// ── Variables ──────────────────────────────────────────────
+$gold: #C9A84C;
+$gold-light: #e8c97e;
+$dark: #0f0d0a;
+$dark2: #16130e;
+$surface: #1c1810;
+$text: #f5f0e8;
+$text-muted: #a09070;
+$border: rgba(#C9A84C, 0.15);
+
+// ── Section Helpers ─────────────────────────────────────────
+.section-tag {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 0.75rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: $text;
+    font-weight: 600;
+    margin: 0.3rem 0 0.75rem;
+    line-height: 1.2;
+  }
+
+  p {
+    color: $text-muted;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+// ══════════════════════════════════════════
+// HERO
+// ══════════════════════════════════════════
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.05);
+    animation: heroZoom 12s ease-out forwards;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba($dark, 0.85) 0%, rgba($dark, 0.45) 60%, rgba($dark, 0.2) 100%),
+      linear-gradient(to top, rgba($dark, 0.7) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+    width: 100%;
+  }
+
+  &__eyebrow {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+  }
+
+  &__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.05;
+    color: $text;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s ease forwards;
+
+    em {
+      font-style: italic;
+      color: $gold;
+    }
+  }
+
+  &__pillars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+
+    .pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background: rgba($dark, 0.55);
+      backdrop-filter: blur(8px);
+      border: 1px solid $border;
+      padding: 0.9rem 1.25rem;
+      min-width: 180px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+
+      &__icon {
+        font-size: 1.4rem;
+        line-height: 1;
+        margin-top: 1px;
+      }
+
+      strong {
+        display: block;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 0.95rem;
+        color: $text;
+        font-weight: 600;
+        margin-bottom: 0.15rem;
+      }
+
+      p {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 0.85rem;
+        color: $text-muted;
+        margin: 0;
+        letter-spacing: 0.03em;
+      }
+    }
+  }
+
+  &__cta {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s ease forwards;
+  }
+
+  &__stamp {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    z-index: 2;
+    writing-mode: vertical-rl;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba($gold, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, rgba($gold, 0.3));
+    }
+  }
+}
+
+// CTA Buttons in hero
+.btn-reserve {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 2.5rem;
+  background: $gold;
+  color: $dark;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.2s;
+
+  &:hover {
+    background: $gold-light;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $text-muted;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.25s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  &:hover { color: $gold; }
+}
+
+// ══════════════════════════════════════════
+// POPULAR DISHES
+// ══════════════════════════════════════════
+.popular {
+  background: $dark2;
+  padding: 6rem 2rem;
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.75rem;
+  }
+}
+
+// Dish Card (shared style — use in *ngFor with real data)
+.dish-card {
+  background: $surface;
+  border: 1px solid $border;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba($gold, 0.25);
+  }
+
+  &__img-wrap {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.06);
+    }
+  }
+
+  &__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(#C9A84C, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: rgba($gold, 0.3);
+
+    svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    span {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+      line-height: 1.6;
+    }
+  }
+
+  &__body {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $gold;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    margin-bottom: 0.5rem;
+  }
+
+  &__name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.25rem;
+    color: $text;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  &__desc {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.95rem;
+    color: $text-muted;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__price {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.4rem;
+    color: $gold;
+    font-weight: 700;
+  }
+
+  &__btn {
+    padding: 0.5rem 1.1rem;
+    background: transparent;
+    border: 1px solid rgba($gold, 0.4);
+    color: $text-muted;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+
+    &:hover {
+      background: $gold;
+      border-color: $gold;
+      color: $dark;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// OUR STORY
+// ══════════════════════════════════════════
+.story {
+  background: $dark;
+  padding: 6rem 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '"';
+    position: absolute;
+    right: 5%;
+    top: -2rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20rem;
+    color: rgba($gold, 0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  &__image-wrap {
+    position: relative;
+  }
+
+  &__img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__img-badge {
+    position: absolute;
+    bottom: -1.5rem;
+    right: -1.5rem;
+    width: 110px;
+    height: 110px;
+    background: $gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: $dark;
+    font-family: 'Playfair Display', Georgia, serif;
+
+    &-num {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    span:last-child {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      margin-top: 0.2rem;
+    }
+  }
+
+  &__content {
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+      color: $text;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0.4rem 0 1.5rem;
+
+      em {
+        font-style: italic;
+        color: $gold;
+      }
+    }
+  }
+
+  &__lead {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.2rem;
+    color: $text;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  &__body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    color: $text-muted;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  &__stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid $border;
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+
+      &__num {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $gold;
+        line-height: 1;
+      }
+
+      &__label {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: $text-muted;
+        margin-top: 0.3rem;
+      }
+    }
+  }
+}
+
+.btn-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2.5rem;
+  background: transparent;
+  border: 1px solid $gold;
+  color: $gold;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+
+  &::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+
+  &:hover {
+    background: $gold;
+    color: $dark;
+
+    &::after { transform: translateX(4px); }
+  }
+}
+
+// ══════════════════════════════════════════
+// ANIMATIONS
+// ══════════════════════════════════════════
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+
+// ══════════════════════════════════════════
+// RESPONSIVE
+// ══════════════════════════════════════════
+@media (max-width: 900px) {
+  .story__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .story__img-badge {
+    right: 1rem;
+    bottom: -1rem;
+  }
+
+  .hero__stamp { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero__pillars { flex-direction: column; }
+  .hero__cta { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .story__stats { gap: 1.5rem; }
+  .popular, .story { padding: 4rem 1.25rem; }
+  .hero__content { padding: 7rem 1.25rem 3rem; }
+}

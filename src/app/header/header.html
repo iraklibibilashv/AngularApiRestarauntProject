@@ -1,0 +1,50 @@
+<header class="header" [class.scrolled]="isScrolled">
+  <div class="header__inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="header__logo">
+      <div class="logo-mark">SR</div>
+      <span class="logo-text">STEP<br><em>RESTAURANT</em></span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="header__nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/menu" routerLinkActive="active">Menu</a>
+      <a routerLink="/cart" routerLinkActive="active" class="nav-cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        Cart
+        <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+    </nav>
+
+    <!-- Auth Buttons -->
+    <div class="header__auth">
+      <a routerLink="/login" class="btn-ghost">Log In</a>
+      <a routerLink="/signup" class="btn-primary">Sign Up</a>
+    </div>
+
+    <!-- Burger -->
+    <button class="burger" (click)="toggleMenu()" [class.open]="menuOpen" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="menuOpen" (click)="closeMenu()">
+    <nav class="mobile-menu__nav" (click)="$event.stopPropagation()">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a>
+      <a routerLink="/menu" routerLinkActive="active" (click)="closeMenu()">Menu</a>
+      <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a>
+      <div class="mobile-menu__divider"></div>
+      <a routerLink="/login" class="btn-ghost" (click)="closeMenu()">Log In</a>
+      <a routerLink="/signup" class="btn-primary" (click)="closeMenu()">Sign Up</a>
+    </nav>
+  </div>
+</header>

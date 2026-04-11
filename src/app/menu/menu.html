@@ -1,0 +1,230 @@
+
+<div class="menu-page">
+
+  <!-- ── Page Hero ───────────────────────────── -->
+  <div class="menu-hero">
+    <div class="menu-hero__inner">
+      <span class="section-tag">Our Kitchen</span>
+      <h1>The Menu</h1>
+      <p>Discover dishes crafted from local ingredients and Georgian tradition</p>
+    </div>
+  </div>
+
+  <div class="menu-layout">
+
+    <!-- ══════════════════════════════════════
+         FILTER SIDEBAR
+    ══════════════════════════════════════ -->
+    <aside class="filters" [class.open]="filterOpen">
+
+      <div class="filters__header">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/>
+          </svg>
+          Filters
+        </h3>
+        <button class="clear-all" (click)="clearAll()" *ngIf="hasActiveFilters()">
+          Clear all
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="filter-block">
+        <label class="filter-label">Search</label>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Dish name..."
+            [(ngModel)]="filters.search"
+            (ngModelChange)="onFilterChange()"
+            class="filter-input"
+          />
+          <button class="input-clear" *ngIf="filters.search" (click)="filters.search=''; onFilterChange()">×</button>
+        </div>
+      </div>
+
+      <!-- Vegetarian -->
+      <div class="filter-block">
+        <label class="filter-label">Vegetarian</label>
+        <div class="toggle-group">
+          <button
+            class="toggle-btn"
+            [class.active]="filters.vegetarian === null"
+            (click)="filters.vegetarian = null; onFilterChange()">
+            All
+          </button>
+          <button
+            class="toggle-btn toggle-btn--yes"
+            [class.active]="filters.vegetarian === true"
+            (click)="filters.vegetarian = true; onFilterChange()">
+            <span>🌿</span> Yes
+          </button>
+          <button
+            class="toggle-btn toggle-btn--no"
+            [class.active]="filters.vegetarian === false"
+            (click)="filters.vegetarian = false; onFilterChange()">
+            <span>🥩</span> No
+          </button>
+        </div>
+      </div>
+
+      <!-- Spiciness -->
+      <div class="filter-block">
+        <label class="filter-label">
+          Spiciness
+          <span class="label-val">{{ filters.spiciness === 0 ? 'Any' : '🌶'.repeat(filters.spiciness) }}</span>
+        </label>
+        <div class="range-wrap">
+          <input
+            type="range"
+            min="0" max="5"
+            [(ngModel)]="filters.spiciness"
+            (ngModelChange)="onFilterChange()"
+            class="range-slider spice-slider"
+          />
+          <div class="range-ticks">
+            <span *ngFor="let t of [0,1,2,3,4,5]">{{ t === 0 ? 'Any' : t }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating -->
+      <div class="filter-block">
+        <label class="filter-label">
+          Min Rating
+          <span class="label-val">{{ filters.rating === 0 ? 'Any' : filters.rating + '★' }}</span>
+        </label>
+        <div class="star-picker">
+          <button
+            *ngFor="let s of [1,2,3,4,5]"
+            class="star-btn"
+            [class.active]="s <= filters.rating"
+            (click)="setRating(s)"
+            [title]="s + ' star' + (s > 1 ? 's' : '')">
+            ★
+          </button>
+          <button class="star-reset" *ngIf="filters.rating > 0" (click)="filters.rating = 0; onFilterChange()">×</button>
+        </div>
+      </div>
+
+      <!-- Price Range -->
+      <div class="filter-block">
+        <label class="filter-label">
+          Price Range
+          <span class="label-val">${{ filters.minPrice }} – ${{ filters.maxPrice }}</span>
+        </label>
+        <div class="price-inputs">
+          <div class="price-field">
+            <span>$</span>
+            <input
+              type="number"
+              placeholder="Min"
+              [(ngModel)]="filters.minPrice"
+              (ngModelChange)="onFilterChange()"
+              min="0"
+              class="filter-input filter-input--price"
+            />
+          </div>
+          <div class="price-sep">—</div>
+          <div class="price-field">
+            <span>$</span>
+            <input
+              type="number"
+              placeholder="Max"
+              [(ngModel)]="filters.maxPrice"
+              (ngModelChange)="onFilterChange()"
+              min="0"
+              class="filter-input filter-input--price"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div class="filter-block">
+        <label class="filter-label">Category</label>
+        <div class="category-list">
+          <button
+            class="category-btn"
+            [class.active]="filters.category === null"
+            (click)="filters.category = null; onFilterChange()">
+            All
+          </button>
+          @for (item of categoriesArr; track $index) {
+          <button class="category-btn">{{item.name}}
+          </button>
+        }
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════════════════════════════
+         PRODUCTS AREA
+    ══════════════════════════════════════ -->
+    <main class="products-area">
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <p class="results-count">
+          <strong>{{ resultCount }}</strong> dishes found
+        </p>
+        <button class="filter-toggle" (click)="filterOpen = !filterOpen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/>
+          </svg>
+          Filters
+          <span class="active-dot" *ngIf="hasActiveFilters()"></span>
+        </button>
+      </div>
+
+      <!-- Grid — render your *ngFor cards here -->
+      <div class="products-grid">
+
+        <!-- ╔══════════════════════════════╗
+             ║  YOUR *ngFor CARDS GO HERE   ║
+             ╚══════════════════════════════╝ -->
+
+        <!-- Placeholder card — DELETE when you add real data -->
+         @for (item of filterProducts; track $index) {
+        <div class="dish-card">
+          <div class="dish-card__img-wrap">
+            <div class="dish-card__img-placeholder">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5"/>
+                <circle cx="26" cy="28" r="2" fill="currentColor"/>
+                <circle cx="38" cy="28" r="2" fill="currentColor"/>
+              </svg>
+              <span><img [src]="" alt=""></span>
+            </div>
+          </div>
+          <div class="dish-card__body">
+            <span class="dish-card__tag">Category</span>
+            <h3 class="dish-card__name">{{item.name}}</h3>
+            <p class="dish-card__desc">{{item.description}}</p>
+            <div class="dish-card__footer">
+              <span class="dish-card__price">${{item.price}}</span>
+              <button class="dish-card__btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+        }
+        <!-- end placeholder -->
+
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="resultCount === 0">
+        <span>🍽️</span>
+        <p>No dishes match your filters.</p>
+        <button (click)="clearAll()">Clear filters</button>
+      </div>
+
+    </main>
+  </div>
+</div>
