@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Api } from '../../services/api';
@@ -22,7 +22,10 @@ export interface MenuFilters {
 })
 
 export class Menu {
-  constructor(private api : Api){}
+  constructor(private api : Api,
+    private router : RouterModule,
+    private cdr : ChangeDetectorRef
+  ){}
 
   filters: MenuFilters = this.defaultFilters();
  
@@ -40,9 +43,12 @@ export class Menu {
       next: (data : any) => {
         this.filterProducts = data.data.products
         console.log(this.filterProducts);
+        this.cdr.detectChanges()
+        
         this.api.getAllProducts(`categories`).subscribe({
           next : (data : any) => {
             this.categoriesArr = data.data
+            this.cdr.detectChanges()
             console.log(this.categoriesArr);
             
 
