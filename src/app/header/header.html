@@ -24,8 +24,12 @@
 
     <!-- Auth Buttons -->
     <div class="header__auth">
+      @if (isLoggedIn()) {
+         <button class="btn-primary" (click)="logout()">Log Out</button>
+      } @else {
       <a routerLink="/login" class="btn-ghost">Log In</a>
       <a routerLink="/register" class="btn-primary">Sign Up</a>
+      }
     </div>
 
     <!-- Burger -->
@@ -43,8 +47,12 @@
       <a routerLink="/menu" routerLinkActive="active" (click)="closeMenu()">Menu</a>
       <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a>
       <div class="mobile-menu__divider"></div>
+      @if (isLoggedIn()) {
+  <button class="btn-primary" (click)="logout(); closeMenu()">Log Out</button>
+      } @else {
       <a routerLink="/login" class="btn-ghost" (click)="closeMenu()">Log In</a>
       <a routerLink="/signup" class="btn-primary" (click)="closeMenu()">Sign Up</a>
+      }
     </nav>
   </div>
 </header>

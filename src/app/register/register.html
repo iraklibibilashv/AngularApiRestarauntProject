@@ -25,7 +25,7 @@
             <input
               type="text"
               placeholder="John"
-              [(ngModel)]="registerData.firstName"
+              [(ngModel)]="user.firstName"
               name="firstName"
               class="form-input"
               required
@@ -43,7 +43,7 @@
             <input
               type="text"
               placeholder="Doe"
-              [(ngModel)]="registerData.lastName"
+              [(ngModel)]="user.lastName"
               name="lastName"
               class="form-input"
               required
@@ -63,7 +63,7 @@
           <input
             type="email"
             placeholder="your@email.com"
-            [(ngModel)]="registerData.email"
+            [(ngModel)]="user.email"
             name="email"
             class="form-input"
             required
@@ -82,7 +82,7 @@
           <input
             [type]="showPassword ? 'text' : 'password'"
             placeholder="••••••••"
-            [(ngModel)]="registerData.password"
+            [(ngModel)]="user.password"
             name="password"
             class="form-input"
             required
@@ -104,9 +104,11 @@
       <p class="auth-error" *ngIf="errorMsg">{{ errorMsg }}</p>
 
       <!-- Submit -->
-      <button type="submit" class="btn-auth" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Create Account</span>
-        <span *ngIf="isLoading" class="spinner"></span>
+      <button type="submit" class="btn-auth"  [disabled]="isLoading">
+        @if (!isLoading) {
+        <span  (click)="onRegister()">Create Account</span>}
+        @if (isLoading) {
+        <span class="spinner"></span>}
       </button>
 
     </form>

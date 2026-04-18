@@ -80,7 +80,7 @@
           <p class="dish-card__desc">{{item.description}}</p>
           <div class="dish-card__footer">
             <span class="dish-card__price">${{item.price}}</span>
-            <button class="dish-card__btn">Add to Cart</button>
+            <button class="dish-card__btn" (click)="addToCart(item.id)">Add to Cart</button>
           </div>
         </div>
       </div>

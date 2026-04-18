@@ -1,0 +1,135 @@
+// ── Variables ──────────────────────────────────────────────
+$gold:    #C9A84C;
+$dark:    #0f0d0a;
+$dark2:   #16130e;
+$text:    #f5f0e8;
+$surface: #1c1810;
+
+$success: #4caf50;
+$error:   #e74c3c;
+$warning: #f39c12;
+$info:    #3498db;
+
+// ══════════════════════════════════════════
+// CONTAINER — fixed top-right
+// ══════════════════════════════════════════
+.alert-container {
+  position: fixed;
+  top: 100px;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+  width: 340px;
+
+  @media (max-width: 480px) {
+    width: calc(100vw - 2rem);
+    right: 1rem;
+  }
+}
+
+// ══════════════════════════════════════════
+// ALERT CARD
+// ══════════════════════════════════════════
+.alert {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  background: $dark2;
+  border: 1px solid rgba($gold, 0.15);
+  border-left: 3px solid $gold;
+  overflow: hidden;
+  pointer-events: all;
+  animation: slideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+
+  // ── Type border colors ──────────────────
+  &--success { border-left-color: $success; }
+  &--error   { border-left-color: $error; }
+  &--warning { border-left-color: $warning; }
+  &--info    { border-left-color: $info; }
+
+  // ── Icon ───────────────────────────────
+  &__icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--success .alert__icon { background: rgba($success, 0.12); color: $success; }
+  &--error   .alert__icon { background: rgba($error,   0.12); color: $error; }
+  &--warning .alert__icon { background: rgba($warning, 0.12); color: $warning; }
+  &--info    .alert__icon { background: rgba($info,    0.12); color: $info; }
+
+  // ── Message ─────────────────────────────
+  &__message {
+    flex: 1;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.95rem;
+    color: $text;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  // ── Close button ────────────────────────
+  &__close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: rgba($text, 0.3);
+    cursor: pointer;
+    padding: 0.2rem;
+    line-height: 1;
+    transition: color 0.2s;
+
+    svg { width: 14px; height: 14px; display: block; }
+
+    &:hover { color: rgba($text, 0.8); }
+  }
+
+  // ── Progress bar ────────────────────────
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    animation: progress 3s linear forwards;
+  }
+
+  &--success .alert__progress { background: $success; }
+  &--error   .alert__progress { background: $error; }
+  &--warning .alert__progress { background: $warning; }
+  &--info    .alert__progress { background: $info; }
+}
+
+// ══════════════════════════════════════════
+// ANIMATIONS
+// ══════════════════════════════════════════
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}

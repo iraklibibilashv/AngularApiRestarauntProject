@@ -24,7 +24,7 @@
           <input
             type="email"
             placeholder="your@email.com"
-            [(ngModel)]="loginData.email"
+            [(ngModel)]="user.email"
             name="email"
             class="form-input"
             required
@@ -43,7 +43,7 @@
           <input
             [type]="showPassword ? 'text' : 'password'"
             placeholder="••••••••"
-            [(ngModel)]="loginData.password"
+            [(ngModel)]="user.password"
             name="password"
             class="form-input"
             required
@@ -65,8 +65,8 @@
       <p class="auth-error" *ngIf="errorMsg">{{ errorMsg }}</p>
 
       <!-- Submit -->
-      <button type="submit" class="btn-auth" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Sign In</span>
+      <button type="submit" class="btn-auth" [disabled]="isLoading" (click)="onLogin()">
+        <span *ngIf="!isLoading"  >Sign In</span>
         <span *ngIf="isLoading" class="spinner"></span>
       </button>
 

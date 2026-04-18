@@ -13,116 +13,121 @@
     <!-- ══════════════════════════════════════
          EMPTY STATE
     ══════════════════════════════════════ -->
-    <!-- *ngIf="cartItems.length === 0" -->
-    <div class="cart-empty">
-      <div class="cart-empty__icon">
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
-          <path d="M8 8h6l8 32h28l6-20H20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="28" cy="52" r="3" fill="currentColor" stroke="none"/>
-          <circle cx="44" cy="52" r="3" fill="currentColor" stroke="none"/>
-        </svg>
+    @if (cartItems().length === 0) {
+      <div class="cart-empty">
+        <div class="cart-empty__icon">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
+            <path d="M8 8h6l8 32h28l6-20H20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="28" cy="52" r="3" fill="currentColor" stroke="none"/>
+            <circle cx="44" cy="52" r="3" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h2>Your cart is empty</h2>
+        <p>Add some dishes from our menu to get started</p>
+        <a routerLink="/menu" class="btn-explore">Browse Menu</a>
       </div>
-      <h2>Your cart is empty</h2>
-      <p>Add some dishes from our menu to get started</p>
-      <a routerLink="/menu" class="btn-explore">Browse Menu</a>
-    </div>
+    }
 
     <!-- ══════════════════════════════════════
-         CART CONTENT  (*ngIf="cartItems.length > 0")
+         CART CONTENT
     ══════════════════════════════════════ -->
-    <div class="cart-content">
+    @if (cartItems().length > 0) {
+      <div class="cart-content">
 
-      <!-- ── Cart Items List ─────────────────── -->
-      <div class="cart-items">
+        <!-- ── Cart Items List ─────────────────── -->
+        <div class="cart-items">
 
-        <div class="cart-items__header">
-          <span>{{ cartItems.length }} item(s)</span>
-          <button class="clear-cart" (click)="clearCart()">Clear all</button>
+          <div class="cart-items__header">
+            <span>{{ cartItems().length }} item(s)</span>
+            <button class="clear-cart" (click)="clearCart()">Clear all</button>
+          </div>
+
+          @for (item of cartItems(); track item.id) {
+            <div class="cart-item">
+
+              <div class="cart-item__img">
+                @if (item.product.image) {
+                  <img [src]="item.product.image" [alt]="item.product.name" />
+                } @else {
+                  <div class="cart-item__img-placeholder">
+                    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor">
+                      <circle cx="20" cy="20" r="16" stroke-width="1.5" stroke-dasharray="3 2"/>
+                    </svg>
+                  </div>
+                }
+              </div>
+
+              <div class="cart-item__info">
+                <span class="cart-item__category">{{ item.product.categoryName }}</span>
+                <h3 class="cart-item__name">{{ item.product.name }}</h3>
+                <p class="cart-item__desc">{{ item.product.description }}</p>
+              </div>
+
+              <div class="cart-item__controls">
+
+                <!-- Quantity -->
+                <div class="quantity">
+                  <button class="quantity__btn" (click)="decrease(item)">−</button>
+                  <span class="quantity__val">{{ item.quantity }}</span>
+                  <button class="quantity__btn" (click)="increase(item)">+</button>
+                </div>
+
+                <!-- Price -->
+                <span class="cart-item__price">${{ item.product.price * item.quantity | number:'1.2-2' }}</span>
+
+                <!-- Remove -->
+                <button class="cart-item__remove" (click)="removeItem(item)" title="Remove">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+                  </svg>
+                </button>
+
+              </div>
+            </div>
+          }
+
         </div>
 
-        <!-- Item Row — *ngFor="let item of cartItems" -->
-        <div class="cart-item" *ngFor="let item of cartItems">
+        <!-- ── Order Summary ───────────────────── -->
+        <div class="cart-summary">
 
-          <div class="cart-item__img">
-            <img [src]="item.image" [alt]="item.name" *ngIf="item.image" />
-            <div class="cart-item__img-placeholder" *ngIf="!item.image">
-              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor">
-                <circle cx="20" cy="20" r="16" stroke-width="1.5" stroke-dasharray="3 2"/>
-              </svg>
+          <h3 class="cart-summary__title">Order Summary</h3>
+
+          <div class="cart-summary__rows">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>${{ subtotal() | number:'1.2-2' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery</span>
+              <span class="summary-row__free">Free</span>
+            </div>
+            <div class="summary-row summary-row--tax">
+              <span>Tax (10%)</span>
+              <span>${{ tax() | number:'1.2-2' }}</span>
             </div>
           </div>
 
-          <div class="cart-item__info">
-            <span class="cart-item__category">{{ item.categoryName }}</span>
-            <h3 class="cart-item__name">{{ item.name }}</h3>
-            <p class="cart-item__desc">{{ item.description }}</p>
+          <div class="cart-summary__total">
+            <span>Total</span>
+            <span>${{ total() | number:'1.2-2' }}</span>
           </div>
 
-          <div class="cart-item__controls">
+          <button class="btn-checkout" (click)="doCheckout()">
+            Proceed to Checkout
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
 
-            <!-- Quantity -->
-            <div class="quantity">
-              <button class="quantity__btn" (click)="decrease(item)">−</button>
-              <span class="quantity__val">{{ item.quantity }}</span>
-              <button class="quantity__btn" (click)="increase(item)">+</button>
-            </div>
+          <a routerLink="/menu" class="btn-continue">
+            ← Continue Shopping
+          </a>
 
-            <!-- Price -->
-            <span class="cart-item__price">${{ item.price * item.quantity | number:'1.2-2' }}</span>
-
-            <!-- Remove -->
-            <button class="cart-item__remove" (click)="removeItem(item)" title="Remove">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
-              </svg>
-            </button>
-
-          </div>
         </div>
-        <!-- end *ngFor -->
 
       </div>
-
-      <!-- ── Order Summary ───────────────────── -->
-      <div class="cart-summary">
-
-        <h3 class="cart-summary__title">Order Summary</h3>
-
-        <div class="cart-summary__rows">
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span>${{ subtotal | number:'1.2-2' }}</span>
-          </div>
-          <div class="summary-row">
-            <span>Delivery</span>
-            <span class="summary-row__free">Free</span>
-          </div>
-          <div class="summary-row summary-row--tax">
-            <span>Tax (10%)</span>
-            <span>${{ tax | number:'1.2-2' }}</span>
-          </div>
-        </div>
-
-        <div class="cart-summary__total">
-          <span>Total</span>
-          <span>${{ total | number:'1.2-2' }}</span>
-        </div>
-
-        <button class="btn-checkout" (click)="checkout()">
-          Proceed to Checkout
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-
-        <a routerLink="/menu" class="btn-continue">
-          ← Continue Shopping
-        </a>
-
-      </div>
-
-    </div>
-    <!-- end cart-content -->
+    }
 
   </div>
 </div>
