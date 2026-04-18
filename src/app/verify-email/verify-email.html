@@ -1,0 +1,58 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <a routerLink="/" class="auth-logo">
+      <div class="logo-mark">SR</div>
+      <span class="logo-text">STEP<br><em>RESTAURANT</em></span>
+    </a>
+
+    <h1 class="auth-title">Verify Email</h1>
+    <p class="auth-sub">Enter the code sent to <strong>{{ email }}</strong></p>
+
+    <form class="auth-form" (ngSubmit)="onVerify()">
+
+      <!-- Code -->
+      <div class="form-group">
+        <label class="form-label">Verification Code</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Enter code..."
+            [(ngModel)]="code"
+            name="code"
+            class="form-input"
+            required
+          />
+        </div>
+      </div>
+
+      <p class="auth-error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+      <button type="submit" class="btn-auth" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Verify Email</span>
+        <span *ngIf="isLoading" class="spinner"></span>
+      </button>
+
+    </form>
+
+    <!-- Resend -->
+    <div class="resend-wrap">
+      <p>Didn't receive the code?</p>
+      <button class="btn-resend" (click)="onResend()" [disabled]="resendCooldown > 0">
+        @if (resendCooldown > 0) {
+          Resend in {{ resendCooldown }}s
+        } @else {
+          Resend Code
+        }
+      </button>
+    </div>
+
+  </div>
+  <div class="auth-bg">
+    <div class="auth-bg__circle auth-bg__circle--1"></div>
+    <div class="auth-bg__circle auth-bg__circle--2"></div>
+  </div>
+</div>

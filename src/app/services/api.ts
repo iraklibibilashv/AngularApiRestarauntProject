@@ -85,4 +85,49 @@ export class Api {
       },
     );
   }
+  verifyEmail(body: { email: string, code: string }) {
+  return this.api.put(this.baseUrl + 'auth/verify-email', body, {
+    headers: this.getHeaders()
+  });
+}
+
+resendVerification(email: string) {
+  return this.api.post(this.baseUrl + `auth/resend-email-verification/${email}`, {}, {
+    headers: this.getHeaders()
+  });
+}
+
+forgotPassword(email: string) {
+  return this.api.post(this.baseUrl + `auth/forgot-password/${email}`, {}, {
+    headers: this.getHeaders()
+  });
+}
+
+resetPassword(body: { token: string, newPassword: string }) {
+  return this.api.put(this.baseUrl + 'auth/reset-password', body, {
+    headers: this.getHeaders()
+  });
+}
+editProfile(body: any) {
+  return this.api.put(this.baseUrl + 'users/edit', body, {
+    headers: this.getHeaders()
+  });
+}
+
+changePassword(body: any) {
+  return this.api.put(this.baseUrl + 'users/change-password', body, {
+    headers: this.getHeaders()
+  });
+}
+
+deleteAccount() {
+  return this.api.delete(this.baseUrl + 'users/delete', {
+    headers: this.getHeaders()
+  });
+}
+refreshToken(token: string) {
+  return this.api.post(this.baseUrl + `auth/refresh-access-token/${token}`, {}, {
+    headers: this.getHeaders()
+  });
+}
 }

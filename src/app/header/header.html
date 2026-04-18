@@ -25,6 +25,7 @@
     <!-- Auth Buttons -->
     <div class="header__auth">
       @if (isLoggedIn()) {
+        <a routerLink="/profile" class="btn-ghost">Profile</a>
          <button class="btn-primary" (click)="logout()">Log Out</button>
       } @else {
       <a routerLink="/login" class="btn-ghost">Log In</a>

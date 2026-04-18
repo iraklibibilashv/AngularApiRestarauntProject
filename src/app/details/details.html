@@ -1,0 +1,111 @@
+<div class="details-page">
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="details-skeleton">
+      <div class="skel-img"></div>
+      <div class="skel-content">
+        <div class="skel-line skel-short"></div>
+        <div class="skel-line skel-long"></div>
+        <div class="skel-line skel-mid"></div>
+        <div class="skel-line skel-long"></div>
+      </div>
+    </div>
+  }
+
+  @if (!isLoading && product) {
+    <!-- ── Breadcrumb ── -->
+    <div class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span>›</span>
+      <a routerLink="/menu">Menu</a>
+      <span>›</span>
+      <span>{{ product.name }}</span>
+    </div>
+
+    <div class="details-layout">
+
+      <!-- ── Image ── -->
+      <div class="details-img-wrap">
+        <img [src]="product.image" [alt]="product.name" *ngIf="product.image" />
+        <div class="details-img-placeholder" *ngIf="!product.image">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
+            <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
+          </svg>
+        </div>
+
+        <!-- Badges -->
+        <div class="details-badges">
+          @if (product.vegetarian) {
+            <span class="badge badge--veg">🌿 Vegetarian</span>
+          }
+          @if (product.spiciness > 0) {
+            <span class="badge badge--spicy">{{ '🌶'.repeat(product.spiciness) }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- ── Info ── -->
+      <div class="details-info">
+
+        <span class="section-tag">{{ product.categoryName }}</span>
+        <h1 class="details-title">{{ product.name }}</h1>
+
+        <!-- Rating -->
+        <div class="details-rating">
+          <div class="stars">
+            @for (s of [1,2,3,4,5]; track s) {
+              <span [class.filled]="s <= product.rate">★</span>
+            }
+          </div>
+          <span class="rate-val">{{ product.rate }}/5</span>
+        </div>
+
+        <p class="details-desc">{{ product.description }}</p>
+
+        <!-- Price + Add to Cart -->
+        <div class="details-purchase">
+          <span class="details-price">${{ product.price * quantity}}</span>
+          <div class="details-qty">
+            <button class="qty-btn" (click)="decrease()">−</button>
+            <span class="qty-val">{{ quantity }}</span>
+            <button class="qty-btn" (click)="increase()">+</button>
+          </div>
+          <button class="btn-add" (click)="addToCart()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            Add to Cart
+          </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="details-divider"></div>
+
+        <!-- Method -->
+        @if (product.method) {
+          <div class="details-section">
+            <h3>Preparation</h3>
+            <p>{{ product.method }}</p>
+          </div>
+        }
+
+        <!-- Ingredients -->
+        @if (product.ingredients?.length > 0) {
+          <div class="details-section">
+            <h3>Ingredients</h3>
+            <ul class="ingredients-list">
+              @for (ing of product.ingredients; track $index) {
+                <li>{{ ing }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+
+</div>

@@ -87,9 +87,10 @@ export class Menu {
     error: (err) => this.alert.error('Please log in first')
   });
 }
- goToDetails(id: number) {
-  this.rout.navigate(['/product', id]);
+goToDetails(id: number) {
+  this.rout.navigate(['/details', id]);
 }
+
 
   // ── Filter methods ───────────────────────────────────────
 

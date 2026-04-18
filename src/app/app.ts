@@ -7,7 +7,7 @@ import { Alert } from './alert/alert';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,Header,Footer,Home,Alert],
+  imports: [RouterOutlet,Header,Footer,Alert],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -1,0 +1,288 @@
+<div class="profile-page">
+  <!-- ── Hero ── -->
+  <div class="profile-hero">
+    <div class="profile-hero__inner">
+      <span class="section-tag">Account</span>
+      <h1>My Profile</h1>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="profile-skeleton">
+      <div class="skel-avatar"></div>
+      <div class="skel-lines">
+        <div class="skel-line skel-long"></div>
+        <div class="skel-line skel-mid"></div>
+        <div class="skel-line skel-short"></div>
+      </div>
+    </div>
+  }
+
+  @if (!isLoading && user) {
+    <div class="profile-layout">
+      <!-- ══ LEFT: Avatar + Info ══ -->
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <img [src]="user.picture" [alt]="user.firstName" *ngIf="user.picture" />
+          <div class="profile-avatar__placeholder" *ngIf="!user.picture">
+            {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+          </div>
+        </div>
+
+        <h2 class="profile-name">{{ user.firstName }} {{ user.lastName }}</h2>
+        <p class="profile-email">{{ user.email }}</p>
+
+        <div class="profile-meta">
+          @if (user.phoneNumber) {
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.37 9.81 19.79 19.79 0 01.3 3.18 2 2 0 012.27 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.91a16 16 0 006.18 6.18l1.27-.72a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+                />
+              </svg>
+              <span>{{ user.phoneNumber }}</span>
+            </div>
+          }
+          @if (user.address) {
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>{{ user.address }}</span>
+            </div>
+          }
+          @if (user.age) {
+            <div class="meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              <span>Age: {{ user.age }}</span>
+            </div>
+          }
+        </div>
+        <!-- Refresh Session -->
+        <button class="btn-refresh" (click)="onRefreshToken()">Refresh Session</button>
+
+        <!-- Delete Account -->
+        <button class="btn-delete" (click)="showDeleteConfirm = true">Delete Account</button>
+      </div>
+
+      <!-- ══ RIGHT: Tabs ══ -->
+      <div class="profile-content">
+        <!-- Tab buttons -->
+        <div class="profile-tabs">
+          <button
+            class="tab-btn"
+            [class.active]="activeTab === 'edit'"
+            (click)="activeTab = 'edit'"
+          >
+            Edit Profile
+          </button>
+          <button
+            class="tab-btn"
+            [class.active]="activeTab === 'password'"
+            (click)="activeTab = 'password'"
+          >
+            Change Password
+          </button>
+        </div>
+
+        <!-- ── Tab: Edit Profile ── -->
+        @if (activeTab === 'edit') {
+          <form class="profile-form" (ngSubmit)="onEdit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    [(ngModel)]="editData.firstName"
+                    name="firstName"
+                    class="form-input"
+                    placeholder="First name"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    [(ngModel)]="editData.lastName"
+                    name="lastName"
+                    class="form-input"
+                    placeholder="Last name"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.37 9.81 19.79 19.79 0 01.3 3.18 2 2 0 012.27 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.91a16 16 0 006.18 6.18l1.27-.72a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+                  />
+                </svg>
+                <input
+                  type="tel"
+                  [(ngModel)]="editData.phoneNumber"
+                  name="phoneNumber"
+                  class="form-input"
+                  placeholder="+995 5XX XXX XXX"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Address</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <input
+                  type="text"
+                  [(ngModel)]="editData.address"
+                  name="address"
+                  class="form-input"
+                  placeholder="Your address"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Age</label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    [(ngModel)]="editData.age"
+                    name="age"
+                    class="form-input"
+                    placeholder="Age"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Picture URL</label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    [(ngModel)]="editData.picture"
+                    name="picture"
+                    class="form-input"
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-save" [disabled]="isUpdating">
+              <span *ngIf="!isUpdating">Save Changes</span>
+              <span *ngIf="isUpdating" class="spinner"></span>
+            </button>
+          </form>
+        }
+
+        <!-- ── Tab: Change Password ── -->
+        @if (activeTab === 'password') {
+          <form class="profile-form" (ngSubmit)="onChangePassword()">
+            <div class="form-group">
+              <label class="form-label">Current Password</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input
+                  [type]="showOld ? 'text' : 'password'"
+                  [(ngModel)]="passData.oldPassword"
+                  name="oldPassword"
+                  class="form-input"
+                  placeholder="••••••••"
+                />
+                <button type="button" class="toggle-pass" (click)="showOld = !showOld">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input
+                  [type]="showNew ? 'text' : 'password'"
+                  [(ngModel)]="passData.newPassword"
+                  name="newPassword"
+                  class="form-input"
+                  placeholder="••••••••"
+                />
+                <button type="button" class="toggle-pass" (click)="showNew = !showNew">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <input
+                  [type]="showConfirm ? 'text' : 'password'"
+                  [(ngModel)]="passData.confirmPassword"
+                  name="confirmPassword"
+                  class="form-input"
+                  placeholder="••••••••"
+                />
+                <button type="button" class="toggle-pass" (click)="showConfirm = !showConfirm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-save" [disabled]="isUpdating">
+              <span *ngIf="!isUpdating">Update Password</span>
+              <span *ngIf="isUpdating" class="spinner"></span>
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ══ Delete Confirm Modal ══ -->
+  @if (showDeleteConfirm) {
+    <div class="modal-overlay" (click)="showDeleteConfirm = false">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>Delete Account</h3>
+        <p>Are you sure? This action <strong>cannot be undone</strong>.</p>
+        <div class="modal-actions">
+          <button class="modal-cancel" (click)="showDeleteConfirm = false">Cancel</button>
+          <button class="modal-confirm" (click)="onDelete()">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

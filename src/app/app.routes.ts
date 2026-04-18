@@ -27,5 +27,18 @@ export const routes: Routes = [
     },
     {
         path: 'login', loadComponent: () => import('./login/login').then(m => m.Login)
+    },
+    {
+        path: 'details/:id', loadComponent: () => import('./details/details').then(m => m.Details)
+    },
+    {
+        path: 'verify-email', loadComponent: () => import('./verify-email/verify-email').then(m => m.VerifyEmail)
+
+    },
+    {
+        path: 'forgot-password', loadComponent: () => import('./forgot-password/forgot-password').then(m => m.ForgotPassword)
+    },
+    {
+        path: 'profile', loadComponent: () => import('./profile/profile').then(m => m.Profile)
     }
 ];
