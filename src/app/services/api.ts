@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class Api {
   constructor(private api: HttpClient) {}
   private baseUrl = 'https://restaurantapi.stepacademy.ge/api/';
-  private authKey = '30b18ba6-b50d-45c4-a77c-e492a24f5337';
+  private authKey = '7187ac24-ce97-4943-8ea6-16097cf6f2e3';
   getHeaders() {
     const token = localStorage.getItem('token');
     return new HttpHeaders({
@@ -129,5 +129,23 @@ refreshToken(token: string) {
   return this.api.post(this.baseUrl + `auth/refresh-access-token/${token}`, {}, {
     headers: this.getHeaders()
   });
+}
+createCategory(body: { name: string }) {
+  return this.api.post(this.baseUrl + 'categories', body, { headers: this.getHeaders() });
+}
+editCategory(id: number, body: { name: string }) {
+  return this.api.put(this.baseUrl + `categories/${id}`, body, { headers: this.getHeaders() });
+}
+deleteCategory(id: number) {
+  return this.api.delete(this.baseUrl + `categories/${id}`, { headers: this.getHeaders() });
+}
+createProduct(body: any) {
+  return this.api.post(this.baseUrl + 'products', body, { headers: this.getHeaders() });
+}
+editProduct(id: number, body: any) {
+  return this.api.put(this.baseUrl + `products/${id}`, body, { headers: this.getHeaders() });
+}
+deleteProduct(id: number) {
+  return this.api.delete(this.baseUrl + `products/${id}`, { headers: this.getHeaders() });
 }
 }
