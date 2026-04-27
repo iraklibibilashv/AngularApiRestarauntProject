@@ -22,8 +22,8 @@ export class Login {
   errorMsg = '';
 
   user = {
-    email: 'stepacc210@gmail.com',
-    password: 'Stepacc210@gmail.com',
+    email: 'iraklibibilashvili99@gmail.com',
+    password: 'Ema@ema123',
   };
   onLogin() {
     this.api.postLogin(this.user).subscribe({

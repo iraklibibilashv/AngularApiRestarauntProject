@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Api } from '../services/api';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService } from '../services/alert';
@@ -58,6 +58,7 @@ export class Profile {
     private api: Api,
     private router: Router,
     private alertService: AlertService,
+    private cdr : ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +69,7 @@ export class Profile {
 
   loadProfile() {
     this.isLoading = true;
-    this.api.getAllProducts('users/me').subscribe({
+    this.api.getAllProducts('users/profile').subscribe({
       next: (res: any) => {
         this.user = res.data ?? res;
         this.editData = {
@@ -80,6 +81,7 @@ export class Profile {
           age: this.user.age || 0,
         };
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
@@ -91,14 +93,17 @@ export class Profile {
   onEdit() {
     this.isUpdating = true;
     this.api.editProfile(this.editData).subscribe({
-      next: () => {
+      next: (res) => {
         this.alertService.success('Profile updated successfully!');
         this.loadProfile();
+        console.log('success:', res)
         this.isUpdating = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.alertService.error(err.error?.error?.detail || 'Update failed.');
         this.isUpdating = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -114,10 +119,12 @@ export class Profile {
         this.alertService.success('Password changed successfully!');
         this.passData = { oldPassword: '', newPassword: '', confirmPassword: '' };
         this.isUpdating = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.alertService.error(err.error?.error?.detail || 'Could not change password.');
         this.isUpdating = false;
+          this.cdr.detectChanges();
       },
     });
   }
@@ -128,11 +135,13 @@ export class Profile {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         this.alertService.info('Account deleted.');
+        this.cdr.detectChanges()
         this.router.navigate(['/']);
       },
       error: (err) => {
         this.alertService.error(err.error?.error?.detail || 'Could not delete account.');
         this.showDeleteConfirm = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -146,6 +155,7 @@ export class Profile {
       next: (res: any) => {
         localStorage.setItem('token', res.data.accessToken);
         this.alertService.success('Session refreshed!');
+        this.cdr.detectChanges();
       },
       error: () => this.alertService.error('Session expired. Please log in again.'),
     });
@@ -154,6 +164,11 @@ export class Profile {
   this.api.getAllProducts('categories').subscribe({
     next: (res: any) => {
       this.categoriesList = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
+      this.cdr.detectChanges();
+    },
+    error: () => {
+      this.alertService.error('Failed to load categories.');
+      this.cdr.detectChanges();
     }
   });
 }
@@ -176,6 +191,7 @@ onCreateCategory() {
 startEditCat(cat: any) {
   this.editingCatId = cat.id;
   this.editingCatName = cat.name;
+  this.cdr.detectChanges();
 }
  
 onEditCategory(id: number) {
@@ -184,8 +200,12 @@ onEditCategory(id: number) {
       this.alertService.success('Category updated!');
       this.editingCatId = null;
       this.loadCategories();
+      this.cdr.detectChanges();
     },
-    error: () => this.alertService.error('Failed to update category.')
+    error: () => {
+      this.alertService.error('Failed to update category.')
+      this.cdr.detectChanges();
+    }
   });
 }
  
@@ -194,8 +214,12 @@ onDeleteCategory(id: number) {
     next: () => {
       this.alertService.success('Category deleted!');
       this.loadCategories();
+      this.cdr.detectChanges();
     },
-    error: () => this.alertService.error('Failed to delete category.')
+    error: () => {
+      this.alertService.error('Failed to delete category.')
+      this.cdr.detectChanges();
+    }
   });
 }
  
@@ -216,8 +240,13 @@ onCreateProduct() {
         ingredients: [], categoryId: null
       };
       this.isUpdating = false;
+      this.cdr.detectChanges();
     },
-    error: () => { this.alertService.error('Failed to create product.'); this.isUpdating = false; }
+    error: () => {
+       this.alertService.error('Failed to create product.'); 
+       this.isUpdating = false;
+       this.cdr.detectChanges();
+       }
   });
 }
 }
