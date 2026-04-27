@@ -1,0 +1,227 @@
+// ── Variables ──────────────────────────────────────────────
+$gold: #C9A84C;
+$gold-light: #e8c97e;
+$dark: #0f0d0a;
+$dark2: #16130e;
+$surface: #1c1810;
+$text: #f5f0e8;
+$text-muted: #a09070;
+$border: rgba(#C9A84C, 0.12);
+
+// ══════════════════════════════════════════
+// FOOTER
+// ══════════════════════════════════════════
+.footer {
+  background: $dark2;
+  border-top: 1px solid $border;
+}
+
+.footer__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+
+  h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid $border;
+  }
+}
+
+// ── Brand ────────────────────────────────────────────────────
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    border: 2px solid $gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $gold;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba($gold, 0.08);
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: $text;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    em {
+      display: block;
+      font-style: normal;
+      font-weight: 400;
+      color: $gold;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+    }
+  }
+}
+
+.footer__desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.95rem;
+  color: $text-muted;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  max-width: 300px;
+}
+
+// ── Nav ──────────────────────────────────────────────────────
+.footer__nav ul,
+.footer__contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer__nav a {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.95rem;
+  color: $text-muted;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+  display: inline-block;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: $gold;
+    transition: width 0.3s ease;
+  }
+
+  &:hover {
+    color: $gold;
+    &::after { width: 100%; }
+  }
+}
+
+// ── Contact ──────────────────────────────────────────────────
+.footer__contact li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.9rem;
+  color: $text-muted;
+  letter-spacing: 0.02em;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    color: $gold;
+    flex-shrink: 0;
+  }
+}
+
+// ── Social ───────────────────────────────────────────────────
+.social-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $border;
+  color: $text-muted;
+  text-decoration: none;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+    background: rgba($gold, 0.08);
+  }
+}
+
+// ── Bottom ───────────────────────────────────────────────────
+.footer__bottom {
+  border-top: 1px solid $border;
+}
+
+.footer__bottom-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.82rem;
+    color: rgba($text-muted, 0.6);
+    letter-spacing: 0.04em;
+  }
+}
+
+// ══════════════════════════════════════════
+// RESPONSIVE
+// ══════════════════════════════════════════
+@media (max-width: 1024px) {
+  .footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 600px) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+    padding: 3rem 1.25rem 2rem;
+    gap: 2rem;
+  }
+
+  .footer__brand { grid-column: auto; }
+
+  .footer__bottom-inner {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+    padding: 1rem 1.25rem;
+  }
+}

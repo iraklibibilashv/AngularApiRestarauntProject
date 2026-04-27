@@ -42,9 +42,7 @@ export class Menu {
     this.api.getAllProducts('categories').subscribe({
       next: (res: any) => {
         this.categoriesArr = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
-        
-        console.log('categories:', this.categoriesArr);
-        this.loadProducts(); // ← categories შემდეგ
+        this.loadProducts();
         this.cdr.detectChanges();
       },
     });
@@ -54,7 +52,6 @@ export class Menu {
     this.isLoading = true;
     this.api.getFilter(this.filtersArr).subscribe({
       next: (res: any) => {
-        console.log('API response:', res);
         this.filterProducts = res.data.products.map((p: any) => ({
           ...p,
           categoryName: this.getCategoryName(p.categoryId),

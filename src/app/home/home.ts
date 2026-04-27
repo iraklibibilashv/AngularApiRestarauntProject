@@ -40,9 +40,7 @@ export class Home {
     this.api.getAllProducts('products?Take=50&Page=1').subscribe({
       next: (data: any) => {
         this.allProducts = data.data.products;
-        console.log(this.allProducts);
         this.topProducts = this.allProducts.sort((a: any, b: any) => b.rate - a.rate).slice(0, 3);
-        console.log(this.topProducts);
       },
     });
   }

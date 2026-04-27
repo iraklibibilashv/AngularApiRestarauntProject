@@ -1,5 +1,4 @@
 <div class="menu-page">
-
   <!-- ── Page Hero ───────────────────────────── -->
   <div class="menu-hero">
     <div class="menu-hero__inner">
@@ -10,22 +9,18 @@
   </div>
 
   <div class="menu-layout">
-
     <!-- ══════════════════════════════════════
          FILTER SIDEBAR
     ══════════════════════════════════════ -->
     <aside class="filters" [class.open]="filterOpen">
-
       <div class="filters__header">
         <h3>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/>
+            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z" />
           </svg>
           Filters
         </h3>
-        <button class="clear-all" (click)="clearAll()" *ngIf="hasActiveFilters()">
-          Clear all
-        </button>
+        <button class="clear-all" (click)="clearAll()" *ngIf="hasActiveFilters()">Clear all</button>
       </div>
 
       <!-- Search -->
@@ -33,7 +28,8 @@
         <label class="filter-label">Search</label>
         <div class="search-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
           </svg>
           <input
             type="text"
@@ -53,19 +49,22 @@
           <button
             class="toggle-btn"
             [class.active]="filtersArr.Vegetarian === null"
-            (click)="onVegetarian(null)">
+            (click)="onVegetarian(null)"
+          >
             All
           </button>
           <button
             class="toggle-btn toggle-btn--yes"
             [class.active]="filtersArr.Vegetarian === true"
-            (click)="onVegetarian(true)">
+            (click)="onVegetarian(true)"
+          >
             <span>🌿</span> Yes
           </button>
           <button
             class="toggle-btn toggle-btn--no"
             [class.active]="filtersArr.Vegetarian === false"
-            (click)="onVegetarian(false)">
+            (click)="onVegetarian(false)"
+          >
             <span>🥩</span> No
           </button>
         </div>
@@ -75,18 +74,21 @@
       <div class="filter-block">
         <label class="filter-label">
           Spiciness
-          <span class="label-val">{{ filtersArr.Spiciness === 0 ? 'Any' : '🌶'.repeat(filtersArr.Spiciness) }}</span>
+          <span class="label-val">{{
+            filtersArr.Spiciness === 0 ? 'Any' : '🌶'.repeat(filtersArr.Spiciness)
+          }}</span>
         </label>
         <div class="range-wrap">
           <input
             type="range"
-            min="0" max="5"
+            min="0"
+            max="5"
             [ngModel]="filtersArr.Spiciness"
             (ngModelChange)="onSpiciness($event)"
             class="range-slider"
           />
           <div class="range-ticks">
-            @for (t of [0,1,2,3,4,5]; track t) {
+            @for (t of [0, 1, 2, 3, 4, 5]; track t) {
               <span>{{ t === 0 ? 'Any' : t }}</span>
             }
           </div>
@@ -100,11 +102,8 @@
           <span class="label-val">{{ filtersArr.Rate === 0 ? 'Any' : filtersArr.Rate + '★' }}</span>
         </label>
         <div class="star-picker">
-          @for (s of [1,2,3,4,5]; track s) {
-            <button
-              class="star-btn"
-              [class.active]="s <= filtersArr.Rate"
-              (click)="onRating(s)">
+          @for (s of [1, 2, 3, 4, 5]; track s) {
+            <button class="star-btn" [class.active]="s <= filtersArr.Rate" (click)="onRating(s)">
               ★
             </button>
           }
@@ -156,27 +155,27 @@
           <button
             class="category-btn"
             [class.active]="filtersArr.CategoryId === null"
-            (click)="onCategory(null)">
+            (click)="onCategory(null)"
+          >
             All
           </button>
           @for (cat of categoriesArr; track cat.id) {
             <button
               class="category-btn"
               [class.active]="filtersArr.CategoryId === cat.id"
-              (click)="onCategory(cat.id, cat.name)">
+              (click)="onCategory(cat.id, cat.name)"
+            >
               {{ cat.name }}
             </button>
           }
         </div>
       </div>
-
     </aside>
 
     <!-- ══════════════════════════════════════
          PRODUCTS AREA
     ══════════════════════════════════════ -->
     <main class="products-area">
-
       <!-- Toolbar -->
       <div class="toolbar">
         <p class="results-count">
@@ -184,17 +183,19 @@
         </p>
         <button class="filter-toggle" (click)="filterOpen = !filterOpen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z"/>
+            <path d="M22 3H2l8 9.46V19l4 2V12.46L22 3z" />
           </svg>
           Filters
-          <span class="active-dot" *ngIf="hasActiveFilters()"></span>
+          @if (hasActiveFilters()) {
+            <span class="active-dot"></span>
+          }
         </button>
       </div>
 
       <!-- Loading Skeleton -->
       @if (isLoading) {
         <div class="products-grid">
-          @for (s of [1,2,3,4,5,6]; track s) {
+          @for (s of [1, 2, 3, 4, 5, 6]; track s) {
             <div class="dish-card skeleton">
               <div class="skeleton-img"></div>
               <div class="dish-card__body">
@@ -211,15 +212,15 @@
       @if (!isLoading) {
         <div class="products-grid">
           @for (item of filterProducts; track item.id) {
-            <div class="dish-card" (click)="goToDetails(item.id)" >
+            <div class="dish-card" (click)="goToDetails(item.id)">
               <div class="dish-card__img-wrap">
                 <img [src]="item.image" [alt]="item.name" />
                 <div class="dish-card__img-placeholder">
                   <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
-                    <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
-                    <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5"/>
-                    <circle cx="26" cy="28" r="2" fill="currentColor"/>
-                    <circle cx="38" cy="28" r="2" fill="currentColor"/>
+                    <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3" />
+                    <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5" />
+                    <circle cx="26" cy="28" r="2" fill="currentColor" />
+                    <circle cx="38" cy="28" r="2" fill="currentColor" />
                   </svg>
                 </div>
               </div>
@@ -229,7 +230,12 @@
                 <p class="dish-card__desc">{{ item.description }}</p>
                 <div class="dish-card__footer">
                   <span class="dish-card__price">${{ item.price }}</span>
-                  <button class="dish-card__btn" (click)="addToCart(item.id); $event.stopPropagation()" >Add to Cart</button>
+                  <button
+                    class="dish-card__btn"
+                    (click)="addToCart(item.id); $event.stopPropagation()"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
@@ -244,7 +250,6 @@
           </div>
         }
       }
-
     </main>
   </div>
 </div>

@@ -33,7 +33,7 @@ export class ForgotPassword {
     this.api.forgotPassword(this.email).subscribe({
       next: () => {
         this.alertService.info('Reset token sent to your email.');
-        this.step = 2;
+        this.router.navigate(['/reset-password']);
         this.isLoading = false;
       },
       error: (err) => {

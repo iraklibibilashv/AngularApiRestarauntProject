@@ -24,10 +24,13 @@
       <!-- ══ LEFT: Avatar + Info ══ -->
       <div class="profile-card">
         <div class="profile-avatar">
-          <img [src]="user.picture" [alt]="user.firstName" *ngIf="user.picture" />
-          <div class="profile-avatar__placeholder" *ngIf="!user.picture">
-            {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
-          </div>
+          @if (user.picture) {
+            <img [src]="user.picture" [alt]="user.firstName" />
+          } @else {
+            <div class="profile-avatar__placeholder">
+              {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+            </div>
+          }
         </div>
 
         <h2 class="profile-name">{{ user.firstName }} {{ user.lastName }}</h2>
@@ -147,8 +150,11 @@
             </div>
 
             <button type="submit" class="btn-save" [disabled]="isUpdating">
-              <span *ngIf="!isUpdating">Save Changes</span>
-              <span *ngIf="isUpdating" class="spinner"></span>
+              @if (!isUpdating) {
+                <span>Save Changes</span>
+              } @else {
+                <span class="spinner"></span>
+              }
             </button>
           </form>
         }
@@ -208,8 +214,11 @@
             </div>
 
             <button type="submit" class="btn-save" [disabled]="isUpdating">
-              <span *ngIf="!isUpdating">Update Password</span>
-              <span *ngIf="isUpdating" class="spinner"></span>
+              @if (!isUpdating) {
+                <span>Update Password</span>
+              } @else {
+                <span class="spinner"></span>
+              }
             </button>
           </form>
         }
@@ -225,8 +234,11 @@
                   <input type="text" [(ngModel)]="newCategoryName" name="newCat" class="form-input" placeholder="Category name..."/>
                 </div>
                 <button type="submit" class="btn-save" [disabled]="isUpdating">
-                  <span *ngIf="!isUpdating">Add</span>
-                  <span *ngIf="isUpdating" class="spinner"></span>
+                  @if (!isUpdating) {
+                    <span>Add</span>
+                  } @else {
+                    <span class="spinner"></span>
+                  }
                 </button>
               </form>
             </div>
@@ -334,8 +346,11 @@
                 </div>
 
                 <button type="submit" class="btn-save" [disabled]="isUpdating">
-                  <span *ngIf="!isUpdating">Add Product</span>
-                  <span *ngIf="isUpdating" class="spinner"></span>
+                  @if (!isUpdating) {
+                    <span>Add Product</span>
+                  } @else {
+                    <span class="spinner"></span>
+                  }
                 </button>
 
               </form>

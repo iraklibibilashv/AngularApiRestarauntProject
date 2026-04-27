@@ -15,27 +15,29 @@
     <p class="hero__eyebrow">Est. 2018 · Italy</p>
 
     <h1 class="hero__title">
-      Where Every<br>
-      <em>Bite Tells</em><br>
+      Where Every<br />
+      <em>Bite Tells</em><br />
       a Story
     </h1>
 
     <div class="hero__pillars">
-      <div class="pillar" *ngFor="let p of pillars; let i = index" [style.animation-delay]="(0.3 + i*0.15)+'s'">
-        <span class="pillar__icon">{{ p.icon }}</span>
-        <div>
-          <strong>{{ p.title }}</strong>
-          <p>{{ p.desc }}</p>
+      @for (p of pillars; track $index; let i = $index) {
+        <div class="pillar" [style.animation-delay]="0.3 + i * 0.15 + 's'">
+          <span class="pillar__icon">{{ p.icon }}</span>
+          <div>
+            <strong>{{ p.title }}</strong>
+            <p>{{ p.desc }}</p>
+          </div>
         </div>
-      </div>
+      }
     </div>
 
     <div class="hero__cta">
       <a routerLink="/menu" class="btn-reserve">View Our Menu</a>
-      <a routerLink="/menu" class="btn-scroll">
+      <a class="btn-scroll">
         <span>Scroll to explore</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 5v14M5 12l7 7 7-7"/>
+          <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
       </a>
     </div>
@@ -47,13 +49,11 @@
   </div>
 </section>
 
-
 <!-- ══════════════════════════════════════════
    POPULAR DISHES
 ══════════════════════════════════════════ -->
 <section class="popular">
   <div class="popular__inner">
-
     <div class="section-header">
       <span class="section-tag">From Our Kitchen</span>
       <h2>Popular Dishes</h2>
@@ -62,42 +62,39 @@
 
     <div class="popular__grid">
       @for (item of topProducts; track $index) {
-      <div class="dish-card placeholder-card">
-        <div class="dish-card__img-wrap">
-          <div class="dish-card__img-placeholder">
-            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
-              <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3"/>
-              <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5"/>
-              <circle cx="26" cy="28" r="2" fill="currentColor"/>
-              <circle cx="38" cy="28" r="2" fill="currentColor"/>
-            </svg>
-            <span><img [src]="item.image" alt=""></span>
+        <div class="dish-card placeholder-card">
+          <div class="dish-card__img-wrap">
+            <div class="dish-card__img-placeholder">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                <circle cx="32" cy="32" r="28" stroke-width="1.5" stroke-dasharray="4 3" />
+                <path d="M20 36c2-6 8-10 12-10s10 4 12 10" stroke-width="1.5" />
+                <circle cx="26" cy="28" r="2" fill="currentColor" />
+                <circle cx="38" cy="28" r="2" fill="currentColor" />
+              </svg>
+              <span><img [src]="item.image" alt="" /></span>
+            </div>
+          </div>
+          <div class="dish-card__body">
+            <span class="dish-card__tag">⭐{{ item.rate }}</span>
+            <h3 class="dish-card__name">{{ item.name }}</h3>
+            <p class="dish-card__desc">{{ item.description }}</p>
+            <div class="dish-card__footer">
+              <span class="dish-card__price">${{ item.price }}</span>
+              <button class="dish-card__btn" (click)="addToCart(item.id)">Add to Cart</button>
+            </div>
           </div>
         </div>
-        <div class="dish-card__body">
-          <span class="dish-card__tag">⭐{{item.rate}}</span>
-          <h3 class="dish-card__name">{{item.name}}</h3>
-          <p class="dish-card__desc">{{item.description}}</p>
-          <div class="dish-card__footer">
-            <span class="dish-card__price">${{item.price}}</span>
-            <button class="dish-card__btn" (click)="addToCart(item.id)">Add to Cart</button>
-          </div>
-        </div>
-      </div>
       }
       <!-- end placeholder -->
     </div>
-
   </div>
 </section>
-
 
 <!-- ══════════════════════════════════════════
    OUR STORY
 ══════════════════════════════════════════ -->
 <section class="story">
   <div class="story__inner">
-
     <div class="story__image-wrap">
       <img
         src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&auto=format&fit=crop&q=80"
@@ -106,25 +103,25 @@
       />
       <div class="story__img-badge">
         <span class="story__img-badge-num">6+</span>
-        <span>Years of<br>Passion</span>
+        <span>Years of<br />Passion</span>
       </div>
     </div>
 
     <div class="story__content">
       <span class="section-tag">Our Story</span>
-      <h2>Food as an<br><em>Art Form</em></h2>
+      <h2>Food as an<br /><em>Art Form</em></h2>
 
       <p class="story__lead">
-        Step Restaurant was born from a simple belief — that a meal is never just food.
-        It's memory, culture, and connection on a plate.
+        Step Restaurant was born from a simple belief — that a meal is never just food. It's memory,
+        culture, and connection on a plate.
       </p>
 
       <p class="story__body">
-        Founded in the heart of Italy, we've been blending Italian culinary traditions
-        with contemporary technique since 2018. Our chefs source ingredients from local farms
-        each morning, ensuring every dish carries the honest flavor of the season.
-        From slow-braised meats to freshly baked breads still warm from the clay oven,
-        every element is made with intention.
+        Founded in the heart of Italy, we've been blending Italian culinary traditions with
+        contemporary technique since 2018. Our chefs source ingredients from local farms each
+        morning, ensuring every dish carries the honest flavor of the season. From slow-braised
+        meats to freshly baked breads still warm from the clay oven, every element is made with
+        intention.
       </p>
 
       <div class="story__stats">
@@ -144,6 +141,5 @@
 
       <a routerLink="/menu" class="btn-explore">Explore Our Menu</a>
     </div>
-
   </div>
 </section>

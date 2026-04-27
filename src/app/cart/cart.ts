@@ -35,12 +35,9 @@ export class Cart {
     this.isLoading.set(true);
     this.api.getCart().subscribe({
       next: (res: any) => {
-        console.log(res.data.items);
-        
         this.cartItems.set(res.data.items);
         this.isLoading.set(false);
         this.cdr.detectChanges()
-        console.log(this.cartItems);
         
       },
       error: (err) => {
