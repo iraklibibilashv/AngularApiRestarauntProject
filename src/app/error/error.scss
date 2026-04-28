@@ -1,0 +1,186 @@
+// ── Variables ──────────────────────────────────────────────
+$gold: #C9A84C;
+$gold-light: #e8c97e;
+$dark: #0f0d0a;
+$dark2: #16130e;
+$text: #f5f0e8;
+$text-muted: #a09070;
+$border: rgba(#C9A84C, 0.12);
+
+// ══════════════════════════════════════════
+// PAGE
+// ══════════════════════════════════════════
+.error-page {
+  min-height: 100vh;
+  background: $dark;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+// ── Background circles ───────────────────────────────────────
+.error-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &__circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba($gold, 0.06);
+
+    &--1 {
+      width: 700px;
+      height: 700px;
+      top: -250px;
+      right: -250px;
+    }
+
+    &--2 {
+      width: 500px;
+      height: 500px;
+      bottom: -200px;
+      left: -200px;
+    }
+  }
+}
+
+// ── Content ──────────────────────────────────────────────────
+.error-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeUp 0.7s ease forwards;
+}
+
+// ── 404 Number ───────────────────────────────────────────────
+.error-code {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+
+  &__num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 700;
+    color: rgba($gold, 0.15);
+    line-height: 1;
+    user-select: none;
+  }
+
+  &__plate {
+    width: clamp(80px, 12vw, 140px);
+    height: clamp(80px, 12vw, 140px);
+    animation: spin 20s linear infinite;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// ── Tag ──────────────────────────────────────────────────────
+.error-tag {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 0.75rem;
+}
+
+// ── Title ────────────────────────────────────────────────────
+.error-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: $text;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+// ── Description ──────────────────────────────────────────────
+.error-desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  color: $text-muted;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  margin-bottom: 2.5rem;
+}
+
+// ── Actions ──────────────────────────────────────────────────
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-home {
+  padding: 0.85rem 2rem;
+  background: $gold;
+  color: $dark;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.2s;
+
+  &:hover {
+    background: $gold-light;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-menu {
+  padding: 0.85rem 2rem;
+  background: transparent;
+  border: 1px solid rgba($gold, 0.4);
+  color: $gold;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+
+  &:hover {
+    background: rgba($gold, 0.08);
+    border-color: $gold;
+    transform: translateY(-2px);
+  }
+}
+
+// ══════════════════════════════════════════
+// ANIMATIONS
+// ══════════════════════════════════════════
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// ══════════════════════════════════════════
+// RESPONSIVE
+// ══════════════════════════════════════════
+@media (max-width: 480px) {
+  .error-actions { flex-direction: column; align-items: center; }
+  .btn-home, .btn-menu { width: 100%; text-align: center; }
+}

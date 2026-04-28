@@ -30,7 +30,7 @@ export class Register {
     this.api.postRegister(this.user).subscribe({
       next: (data: any) => {
         console.log(data);
-        this.router.navigate(['./verify-email']);
+        this.router.navigate(['./verify-email'], { queryParams: { email: this.user.email } });
       },
       error: (err) => {
         console.error(err);
