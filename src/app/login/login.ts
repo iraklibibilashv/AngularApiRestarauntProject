@@ -23,7 +23,7 @@ export class Login {
 
   user = {
     email: 'iraklibibilashvili99@gmail.com',
-    password: 'Ema@ema123',
+    password: 'Ema@ema12345',
   };
   onLogin() {
     this.api.postLogin(this.user).subscribe({
