@@ -1,5 +1,5 @@
 // ── Variables ──────────────────────────────────────────────
-$gold: #C9A84C;
+$gold: #c9a84c;
 $gold-light: #e8c97e;
 $dark: #0f0d0a;
 $dark2: #16130e;
@@ -7,8 +7,8 @@ $surface: #1c1810;
 $surface2: #22201a;
 $text: #f5f0e8;
 $text-muted: #a09070;
-$border: rgba(#C9A84C, 0.12);
-$border-focus: rgba(#C9A84C, 0.45);
+$border: rgba(#c9a84c, 0.12);
+$border-focus: rgba(#c9a84c, 0.45);
 $red: #e74c3c;
 
 .section-tag {
@@ -178,7 +178,10 @@ $red: #e74c3c;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
 
   &:hover {
     border-color: $red;
@@ -213,7 +216,9 @@ $red: #e74c3c;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   margin-bottom: -1px;
 
   &.active {
@@ -221,7 +226,9 @@ $red: #e74c3c;
     border-bottom-color: $gold;
   }
 
-  &:hover:not(.active) { color: $text; }
+  &:hover:not(.active) {
+    color: $text;
+  }
 }
 
 // ── Form ─────────────────────────────────────────────────────
@@ -258,7 +265,9 @@ $red: #e74c3c;
   align-items: center;
   background: $surface;
   border: 1px solid $border;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
 
   &:focus-within {
     border-color: $border-focus;
@@ -286,10 +295,14 @@ $red: #e74c3c;
   color: $text;
   letter-spacing: 0.03em;
 
-  &::placeholder { color: rgba($text-muted, 0.45); }
+  &::placeholder {
+    color: rgba($text-muted, 0.45);
+  }
 
   &[type='number']::-webkit-outer-spin-button,
-  &[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; }
+  &[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 }
 
 // input without icon
@@ -308,8 +321,14 @@ $red: #e74c3c;
   line-height: 1;
   transition: color 0.2s;
 
-  svg { width: 16px; height: 16px; display: block; }
-  &:hover { color: $gold; }
+  svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  &:hover {
+    color: $gold;
+  }
 }
 
 .btn-save {
@@ -328,14 +347,19 @@ $red: #e74c3c;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.25s, transform 0.2s;
+  transition:
+    background 0.25s,
+    transform 0.2s;
 
   &:hover:not(:disabled) {
     background: $gold-light;
     transform: translateY(-1px);
   }
 
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .spinner {
@@ -348,7 +372,11 @@ $red: #e74c3c;
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 // ══════════════════════════════════════════
 // DELETE CONFIRM MODAL
@@ -387,7 +415,9 @@ $red: #e74c3c;
     line-height: 1.6;
     margin-bottom: 2rem;
 
-    strong { color: $red; }
+    strong {
+      color: $red;
+    }
   }
 }
 
@@ -407,9 +437,14 @@ $red: #e74c3c;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 
-  &:hover { border-color: rgba($gold, 0.3); color: $text; }
+  &:hover {
+    border-color: rgba($gold, 0.3);
+    color: $text;
+  }
 }
 
 .modal-confirm {
@@ -426,23 +461,40 @@ $red: #e74c3c;
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover { background: darken($red, 8%); }
+  &:hover {
+    background: darken($red, 8%);
+  }
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 // ══════════════════════════════════════════
 // SKELETON
 // ══════════════════════════════════════════
 @keyframes shimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position: 600px 0; }
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
 }
 
-$skel-bg: linear-gradient(90deg, rgba($gold,0.04) 25%, rgba($gold,0.10) 50%, rgba($gold,0.04) 75%);
+$skel-bg: linear-gradient(
+  90deg,
+  rgba($gold, 0.04) 25%,
+  rgba($gold, 0.1) 50%,
+  rgba($gold, 0.04) 75%
+);
 
 .profile-skeleton {
   display: flex;
@@ -479,9 +531,16 @@ $skel-bg: linear-gradient(90deg, rgba($gold,0.04) 25%, rgba($gold,0.10) 50%, rgb
     border-radius: 2px;
   }
 
-  .skel-long  { width: 60%; height: 24px; }
-  .skel-mid   { width: 40%; }
-  .skel-short { width: 25%; }
+  .skel-long {
+    width: 60%;
+    height: 24px;
+  }
+  .skel-mid {
+    width: 40%;
+  }
+  .skel-short {
+    width: 25%;
+  }
 }
 .btn-refresh {
   width: 100%;
@@ -495,12 +554,188 @@ $skel-bg: linear-gradient(90deg, rgba($gold,0.04) 25%, rgba($gold,0.10) 50%, rgb
   text-transform: uppercase;
   cursor: pointer;
   margin-bottom: 0.5rem;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 
   &:hover {
     border-color: $gold;
     color: $gold;
   }
+}
+// ══════════════════════════════════════════
+// ADMIN PANEL
+// ══════════════════════════════════════════
+.admin-panel {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+
+  h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    color: $text;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid $border;
+  }
+}
+
+.admin-panel__add,
+.admin-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+
+  .input-wrap {
+    flex: 1;
+  }
+
+  &--product {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba($gold, 0.06);
+
+  &__name {
+    flex: 1;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    color: $text;
+    letter-spacing: 0.03em;
+  }
+
+  &__img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__price {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.9rem;
+    color: $gold;
+    margin-left: auto;
+    margin-right: 0.5rem;
+  }
+
+  .input-wrap {
+    flex: 1;
+  }
+}
+
+.admin-edit-input {
+  padding-left: 0.9rem !important;
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid $border;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  flex-shrink: 0;
+
+  &--edit {
+    color: $text-muted;
+    &:hover {
+      border-color: $gold;
+      color: $gold;
+    }
+  }
+  &--del {
+    color: rgba($red, 0.6);
+    &:hover {
+      border-color: $red;
+      color: $red;
+      background: rgba($red, 0.06);
+    }
+  }
+  &--save {
+    color: #4caf50;
+    border-color: rgba(#4caf50, 0.3);
+    &:hover {
+      background: rgba(#4caf50, 0.1);
+    }
+  }
+  &--cancel {
+    color: $text-muted;
+    &:hover {
+      border-color: rgba($gold, 0.3);
+    }
+  }
+}
+
+.input-wrap--select {
+  select {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 0.9rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    color: $text;
+    cursor: pointer;
+
+    option {
+      background: $surface;
+      color: $text;
+    }
+  }
+}
+
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  background: $surface;
+  border: 1px solid $border;
+  color: $text-muted;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active {
+    background: rgba($gold, 0.12);
+    border-color: $gold;
+    color: $gold;
+  }
+}
+.admin-empty {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.9rem;
+  color: $text-muted;
+  text-align: center;
+  padding: 1rem 0;
 }
 
 // ══════════════════════════════════════════
@@ -511,11 +746,19 @@ $skel-bg: linear-gradient(90deg, rgba($gold,0.04) 25%, rgba($gold,0.10) 50%, rgb
     grid-template-columns: 1fr;
   }
 
-  .profile-card { position: static; }
+  .profile-card {
+    position: static;
+  }
 }
 
 @media (max-width: 500px) {
-  .form-row { grid-template-columns: 1fr; }
-  .profile-layout { padding: 2rem 1.25rem 4rem; }
-  .profile-hero { padding: 6rem 1.25rem 2rem; }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .profile-layout {
+    padding: 2rem 1.25rem 4rem;
+  }
+  .profile-hero {
+    padding: 6rem 1.25rem 2rem;
+  }
 }

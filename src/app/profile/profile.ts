@@ -53,18 +53,21 @@ export class Profile {
     ingredients: [],
     categoryId: null,
   };
+  productsList: any[] = [];
 
   constructor(
     private api: Api,
     private router: Router,
     private alertService: AlertService,
-    private cdr : ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.isAdmin = localStorage.getItem('isAdmin') === 'true';
     this.loadProfile();
-    if (this.isAdmin) this.loadCategories();
+      this.loadCategories();
+      this.loadProducts();
+    
   }
 
   loadProfile() {
@@ -96,7 +99,7 @@ export class Profile {
       next: (res) => {
         this.alertService.success('Profile updated successfully!');
         this.loadProfile();
-        console.log('success:', res)
+        console.log('success:', res);
         this.isUpdating = false;
         this.cdr.detectChanges();
       },
@@ -124,7 +127,7 @@ export class Profile {
       error: (err) => {
         this.alertService.error(err.error?.error?.detail || 'Could not change password.');
         this.isUpdating = false;
-          this.cdr.detectChanges();
+        this.cdr.detectChanges();
       },
     });
   }
@@ -135,7 +138,7 @@ export class Profile {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         this.alertService.info('Account deleted.');
-        this.cdr.detectChanges()
+        this.cdr.detectChanges();
         this.router.navigate(['/']);
       },
       error: (err) => {
@@ -161,92 +164,127 @@ export class Profile {
     });
   }
   loadCategories() {
-  this.api.getAllProducts('categories').subscribe({
-    next: (res: any) => {
-      this.categoriesList = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
-      this.cdr.detectChanges();
-    },
-    error: () => {
-      this.alertService.error('Failed to load categories.');
-      this.cdr.detectChanges();
-    }
-  });
-}
- 
-// Categories
-onCreateCategory() {
-  if (!this.newCategoryName.trim()) return;
-  this.isUpdating = true;
-  this.api.createCategory({ name: this.newCategoryName }).subscribe({
-    next: () => {
-      this.alertService.success('Category created!');
-      this.newCategoryName = '';
-      this.loadCategories();
-      this.isUpdating = false;
-    },
-    error: () => { this.alertService.error('Failed to create category.'); this.isUpdating = false; }
-  });
-}
- 
-startEditCat(cat: any) {
-  this.editingCatId = cat.id;
-  this.editingCatName = cat.name;
-  this.cdr.detectChanges();
-}
- 
-onEditCategory(id: number) {
-  this.api.editCategory(id, { name: this.editingCatName }).subscribe({
-    next: () => {
-      this.alertService.success('Category updated!');
-      this.editingCatId = null;
-      this.loadCategories();
-      this.cdr.detectChanges();
-    },
-    error: () => {
-      this.alertService.error('Failed to update category.')
-      this.cdr.detectChanges();
-    }
-  });
-}
- 
-onDeleteCategory(id: number) {
-  this.api.deleteCategory(id).subscribe({
-    next: () => {
-      this.alertService.success('Category deleted!');
-      this.loadCategories();
-      this.cdr.detectChanges();
-    },
-    error: () => {
-      this.alertService.error('Failed to delete category.')
-      this.cdr.detectChanges();
-    }
-  });
-}
- 
-// Products
-onCreateProduct() {
-  this.isUpdating = true;
-  const body = {
-    ...this.newProduct,
-    ingredients: this.ingredientsInput.split(',').map((s: string) => s.trim()).filter(Boolean)
-  };
-  this.api.createProduct(body).subscribe({
-    next: () => {
-      this.alertService.success('Product created!');
-      this.ingredientsInput = '';
-      this.newProduct = {
-        name: '', description: '', vegetarian: false,
-        spiciness: 0, price: 0, image: '', method: '',
-        ingredients: [], categoryId: null
-      };
-      this.isUpdating = false;
-      this.cdr.detectChanges();
-    },
-    error: () => {
-       this.alertService.error('Failed to create product.'); 
-       this.isUpdating = false;
-       this.cdr.detectChanges();
-       }
-  });
-}
+    this.api.getAllProducts('categories').subscribe({
+      next: (res: any) => {
+        this.categoriesList = Array.isArray(res) ? res : (res.data ?? res.items ?? []);
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to load categories.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  // Categories
+  onCreateCategory() {
+    if (!this.newCategoryName.trim()) return;
+    this.isUpdating = true;
+    this.api.createCategory({ name: this.newCategoryName }).subscribe({
+      next: () => {
+        this.alertService.success('Category created!');
+        this.newCategoryName = '';
+        this.loadCategories();
+        this.isUpdating = false;
+      },
+      error: () => {
+        this.alertService.error('Failed to create category.');
+        this.isUpdating = false;
+      },
+    });
+  }
+
+  startEditCat(cat: any) {
+    this.editingCatId = cat.id;
+    this.editingCatName = cat.name;
+    this.cdr.detectChanges();
+  }
+
+  onEditCategory(id: number) {
+    this.api.editCategory(id, { name: this.editingCatName }).subscribe({
+      next: () => {
+        this.alertService.success('Category updated!');
+        this.editingCatId = null;
+        this.loadCategories();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to update category.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  onDeleteCategory(id: number) {
+    this.api.deleteCategory(id).subscribe({
+      next: () => {
+        this.alertService.success('Category deleted!');
+        this.loadCategories();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to delete category.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  // Products
+  onCreateProduct() {
+    this.isUpdating = true;
+    const body = {
+      ...this.newProduct,
+      ingredients: this.ingredientsInput
+        .split(',')
+        .map((s: string) => s.trim())
+        .filter(Boolean),
+    };
+    this.api.createProduct(body).subscribe({
+      next: () => {
+        this.alertService.success('Product created!');
+        this.ingredientsInput = '';
+        this.newProduct = {
+          name: '',
+          description: '',
+          vegetarian: false,
+          spiciness: 0,
+          price: 0,
+          image: '',
+          method: '',
+          ingredients: [],
+          categoryId: null,
+        };
+        this.isUpdating = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to create product.');
+        this.isUpdating = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  loadProducts() {
+    this.api.getFilter({ Take: 100, Page: 1 }).subscribe({
+      next: (res: any) => {
+        this.productsList = res.data?.products ?? [];
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to load products.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  onDeleteProduct(id: number) {
+    this.api.deleteProduct(id).subscribe({
+      next: () => {
+        this.alertService.success('Product deleted!');
+        this.loadProducts();
+      },
+      error: () => this.alertService.error('Failed to delete product.'),
+    });
+  }
 }
