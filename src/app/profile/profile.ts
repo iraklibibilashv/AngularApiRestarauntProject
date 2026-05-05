@@ -54,6 +54,9 @@ export class Profile {
     categoryId: null,
   };
   productsList: any[] = [];
+  editingProductId: number | null = null;
+  editingProduct: any = {};
+  editingIngredientsInput = '';
 
   constructor(
     private api: Api,
@@ -65,9 +68,8 @@ export class Profile {
   ngOnInit(): void {
     this.isAdmin = localStorage.getItem('isAdmin') === 'true';
     this.loadProfile();
-      this.loadCategories();
-      this.loadProducts();
-    
+    this.loadCategories();
+    this.loadProducts();
   }
 
   loadProfile() {
@@ -285,6 +287,33 @@ export class Profile {
         this.loadProducts();
       },
       error: () => this.alertService.error('Failed to delete product.'),
+    });
+  }
+  startEditProduct(p: any) {
+    this.editingProductId = p.id;
+    this.editingProduct = { ...p };
+    this.editingIngredientsInput = Array.isArray(p.ingredients) ? p.ingredients.join(', ') : '';
+  }
+
+  onEditProduct(id: number) {
+    const body = {
+      ...this.editingProduct,
+      ingredients: this.editingIngredientsInput
+        .split(',')
+        .map((s: string) => s.trim())
+        .filter(Boolean),
+    };
+    this.api.editProduct(id, this.editingProduct).subscribe({
+      next: () => {
+        this.alertService.success('Product updated!');
+        this.editingProductId = null;
+        this.loadProducts();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.alertService.error('Failed to update product.');
+        this.cdr.detectChanges();
+      },
     });
   }
 }

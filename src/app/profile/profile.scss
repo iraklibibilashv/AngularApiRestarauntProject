@@ -737,6 +737,17 @@ $skel-bg: linear-gradient(
   text-align: center;
   padding: 1rem 0;
 }
+.admin-product-edit {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-row-actions {
+  display: flex;
+  gap: 0.5rem;
+}
 
 // ══════════════════════════════════════════
 // RESPONSIVE
