@@ -49,6 +49,7 @@
       <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()">Cart</a>
       <div class="mobile-menu__divider"></div>
       @if (isLoggedIn()) {
+         <button class="btn-primary" routerLink="/profile">Profile</button>
   <button class="btn-primary" (click)="logout(); closeMenu()">Log Out</button>
       } @else {
       <a routerLink="/login" class="btn-ghost" (click)="closeMenu()">Log In</a>
